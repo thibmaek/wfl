@@ -11,12 +11,8 @@
 - Must start with the next section; do not include the title or Table of Contents headings.
 - Must be at least one-depth: must capture all `##` headings. -->
 - [Background](#background)
-- [Install](#install)
 - [Usage](#usage)
-- [Extra Sections](#extra-sections)
-- [API](#api)
 - [Maintainers](#maintainers)
-  - [Thanks](#thanks)
 - [Contributing](#contributing)
 - [License](#license)
 
