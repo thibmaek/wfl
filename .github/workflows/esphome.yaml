@@ -1,0 +1,39 @@
+name: 'Compile ESPHome configurations'
+
+on:
+  workflow_call:
+    inputs:
+      configs_dir:
+        type: string
+        required: false
+
+jobs:
+  esphome:
+    name: "Compile ESPHome"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python_version: ['3.10']
+    steps:
+      - name: "Checking out repository"
+        uses: actions/checkout@main
+      - name: "Setup Python: ${{ matrix.python_version }}"
+        uses: actions/setup-python@main
+        with:
+          python-version: ${{ matrix.python_version }}
+          architecture: x64
+      - name: "Install ESPHome (via pip)"
+        run: pip install esphome pillow
+      - name: "Compile all configs"
+        working-directory: ${{ inputs.configs_dir }}
+        run: |
+          shopt -s globstar nullglob
+          
+          ESPHOME_CONFIGS=( ./**/*.yaml )
+
+          for config in "${ESPHOME_CONFIGS[@]}"; do
+            echo "🛠  Compiling ESPHome configuration: $config"
+            if ! esphome compile "$config"; then
+              exit 1
+            fi
+          done
